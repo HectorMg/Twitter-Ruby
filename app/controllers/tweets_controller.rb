@@ -1,6 +1,6 @@
 class TweetsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-
+  before_action :correct_user!, only: [ :destroy, :edit, :update ]
   def index
     @tweets = Tweet.all
     @tweet = Tweet.new
@@ -28,11 +28,10 @@ class TweetsController < ApplicationController
 
   def destroy
     @tweet = Tweet.find(params[:id])
-    if @tweet.destroy
-      respond_to do |format|
-        format.html { redirect_to tweets_path }
-        format.js
-      end
+    @tweet.destroy
+    respond_to do |format|
+      format.html { redirect_to tweets_path }
+      format.js
     end
   end
 
@@ -52,5 +51,9 @@ class TweetsController < ApplicationController
   private
     def tweet_params
       params.require(:tweet).permit(:content)
+    end
+
+    def correct_user!
+      redirect_to root_path if !current_user.tweet_ids.include? params[:id]
     end
 end
