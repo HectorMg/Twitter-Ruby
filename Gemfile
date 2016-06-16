@@ -44,6 +44,7 @@ group :test do
   gem 'shoulda-matchers', '~> 3.0'
   gem 'rspec-collection_matchers'
   gem 'capybara'
+  gem 'capybara-webkit'
   gem 'database_cleaner'
 end
 group :development do
